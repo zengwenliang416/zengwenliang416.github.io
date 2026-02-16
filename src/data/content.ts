@@ -135,12 +135,18 @@ export const projects: Project[] = [
 export const publications = [
   {
     title: 'GDilatedDTA',
-    desc: 'Drug-target binding affinity prediction using graph dilated convolution networks.',
+    desc: 'GDilatedDTA: Graph dilation convolution strategy for drug target binding affinity prediction.',
+    journal: 'Biomedical Signal Processing and Control, Vol.92, 2024',
+    authors: 'Longxin Zhang, Wenliang Zeng, Jingsheng Chen, Jianguo Chen, Keqin Li',
+    doi: 'https://doi.org/10.1016/j.bspc.2024.106110',
     tags: ['GNN', 'Drug Discovery', 'Deep Learning'],
   },
   {
     title: 'ParaCPI',
-    desc: 'Parallel graph convolutional network for compound-protein interaction prediction.',
+    desc: 'ParaCPI: A Parallel Graph Convolutional Network for Compound-Protein Interaction Prediction.',
+    journal: 'IEEE/ACM Transactions on Computational Biology and Bioinformatics, Vol.21(5), 2024, pp.1565-1578',
+    authors: 'Longxin Zhang, Wenliang Zeng, Jingsheng Chen, Jianguo Chen, Keqin Li',
+    doi: 'https://doi.org/10.1109/TCBB.2024.3404889',
     tags: ['GCN', 'Protein', 'Drug Discovery'],
   },
 ]

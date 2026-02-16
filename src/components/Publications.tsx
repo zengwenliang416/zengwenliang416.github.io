@@ -14,9 +14,12 @@ export default function Publications() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {publications.map((pub, i) => (
           <RevealOnScroll key={pub.title} delay={i * 0.1}>
-            <motion.div
+            <motion.a
+              href={pub.doi}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ y: -4, borderColor: 'rgba(108,99,255,0.3)' }}
-              className="p-8 rounded-2xl bg-dark-card border border-dark-border transition-colors group"
+              className="block p-8 rounded-2xl bg-dark-card border border-dark-border transition-colors group"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-indigo-dim flex items-center justify-center text-indigo text-lg font-bold">
@@ -26,7 +29,9 @@ export default function Publications() {
                   {pub.title}
                 </h3>
               </div>
-              <p className="text-text-secondary text-[15px] leading-relaxed mb-5">{pub.desc}</p>
+              <p className="text-text-secondary text-[15px] leading-relaxed mb-3">{pub.desc}</p>
+              <p className="text-text-muted text-xs mb-1">{pub.authors}</p>
+              <p className="text-indigo/70 text-xs font-mono mb-5">{pub.journal}</p>
               <div className="flex flex-wrap gap-2">
                 {pub.tags.map((tag) => (
                   <span key={tag} className="px-3 py-1 rounded-full text-xs font-mono border border-indigo/10 text-indigo/70">
@@ -34,7 +39,7 @@ export default function Publications() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </motion.a>
           </RevealOnScroll>
         ))}
       </div>
