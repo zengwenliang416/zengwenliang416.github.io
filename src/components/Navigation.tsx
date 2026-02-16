@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { navLinks, siteConfig } from '../data/content'
+import { siteConfig } from '../data/content'
+import { useLocale } from '../i18n/LocaleContext'
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
+  const { locale, setLocale, t } = useLocale()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -26,7 +28,7 @@ export default function Navigation() {
         </a>
 
         <div className="flex items-center gap-8">
-          {navLinks.map((link, i) => (
+          {t.nav.links.map((link, i) => (
             <motion.a
               key={link.href}
               href={link.href}
@@ -38,6 +40,15 @@ export default function Navigation() {
               {link.label}
             </motion.a>
           ))}
+          <motion.button
+            onClick={() => setLocale(locale === 'en' ? 'zh' : 'en')}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75 }}
+            className="px-3 py-1 rounded-full border border-dark-border text-text-secondary text-sm font-semibold hover:border-coral/30 hover:text-text-primary transition-colors"
+          >
+            {locale === 'en' ? '中' : 'EN'}
+          </motion.button>
           <motion.a
             href={`mailto:${siteConfig.email}`}
             initial={{ opacity: 0, y: -10 }}
@@ -45,7 +56,7 @@ export default function Navigation() {
             transition={{ delay: 0.8 }}
             className="px-5 py-2 rounded-full bg-coral text-dark text-sm font-semibold hover:bg-coral/90 transition-colors"
           >
-            Contact
+            {t.nav.contact}
           </motion.a>
         </div>
       </div>

@@ -1,30 +1,8 @@
 export const siteConfig = {
   name: 'Wenliang Zeng',
-  title: 'Full-Stack Developer & AI Tooling Builder',
   email: 'wenliang_zeng416@163.com',
   github: 'https://github.com/Zengwenliang0416',
 }
-
-export const heroData = {
-  greeting: 'Hello, I\'m',
-  name: 'WENLIANG\nZENG',
-  roles: ['Full-Stack Developer', 'AI Tooling Builder', 'Open Source Creator'],
-  description: 'Building AI-powered tools and production-grade applications that bridge research with real-world engineering.',
-}
-
-export const navLinks = [
-  { label: 'Projects', href: '#projects' },
-  { label: 'Stack', href: '#stack' },
-  { label: 'Papers', href: '#papers' },
-  { label: 'Contact', href: '#contact' },
-]
-
-export const stats = [
-  { value: 43, suffix: '+', label: 'Repositories' },
-  { value: 80, suffix: '+', label: 'GitHub Stars' },
-  { value: 6, suffix: '', label: 'Languages' },
-  { value: 2, suffix: '', label: 'Publications' },
-]
 
 export const techStack = [
   'Python', 'TypeScript', 'JavaScript', 'Swift', 'Rust', 'Java',
@@ -35,8 +13,6 @@ export const techStack = [
 
 export interface Project {
   name: string
-  title: string
-  desc: string
   tech: string[]
   stars?: number
   url: string
@@ -49,8 +25,6 @@ export interface Project {
 export const projects: Project[] = [
   {
     name: 'mcp-server-sequential-thinking',
-    title: 'Sequential Thinking MCP',
-    desc: 'MCP server enabling structured sequential thinking for AI agents. Step-by-step reasoning protocol for complex decision-making workflows.',
     tech: ['JavaScript', 'MCP Protocol', 'Node.js'],
     stars: 42,
     url: 'https://github.com/Zengwenliang0416/mcp-server-sequential-thinking',
@@ -60,8 +34,6 @@ export const projects: Project[] = [
   },
   {
     name: 'claude-notifier',
-    title: 'Claude Notifier',
-    desc: 'macOS native notification tool for Claude Code. System alerts when long-running AI tasks complete.',
     tech: ['Swift', 'macOS', 'Notifications API'],
     stars: 17,
     url: 'https://github.com/Zengwenliang0416/claude-notifier',
@@ -71,8 +43,6 @@ export const projects: Project[] = [
   },
   {
     name: 'banana-image-mcp',
-    title: 'Banana Image MCP',
-    desc: 'MCP server for AI-powered image generation and processing pipelines. Seamless integration with Claude.',
     tech: ['Python', 'MCP Protocol', 'AI'],
     stars: 11,
     url: 'https://github.com/Zengwenliang0416/banana-image-mcp',
@@ -82,8 +52,6 @@ export const projects: Project[] = [
   },
   {
     name: 'ParaCPI',
-    title: 'ParaCPI',
-    desc: 'Parallel graph convolutional network for compound-protein interaction prediction in drug discovery.',
     tech: ['Python', 'PyTorch', 'GNN', 'Deep Learning'],
     stars: 1,
     url: 'https://github.com/Zengwenliang0416/ParaCPI',
@@ -92,8 +60,6 @@ export const projects: Project[] = [
   },
   {
     name: 'my-plugins',
-    title: 'My Plugins',
-    desc: 'Curated collection of developer plugins and extensions for enhanced productivity.',
     tech: ['TypeScript', 'Plugins'],
     stars: 1,
     url: 'https://github.com/Zengwenliang0416/my-plugins',
@@ -102,8 +68,6 @@ export const projects: Project[] = [
   },
   {
     name: 'Mermaid_General_Pic',
-    title: 'Mermaid to Image',
-    desc: 'Web app converting Mermaid diagrams to images with live preview, DPI control and multi-format export.',
     tech: ['Vue 3', 'Node.js', 'Mermaid'],
     stars: 1,
     url: 'https://github.com/Zengwenliang0416/Mermaid_General_Pic',
@@ -112,8 +76,6 @@ export const projects: Project[] = [
   },
   {
     name: 'MarkPub',
-    title: 'MarkPub',
-    desc: 'Desktop app for one-click publishing Markdown articles to multiple blog platforms like CSDN and Juejin.',
     tech: ['Python', 'Desktop', 'Markdown'],
     stars: 1,
     url: 'https://github.com/Zengwenliang0416/MarkPub',
@@ -122,8 +84,6 @@ export const projects: Project[] = [
   },
   {
     name: 'CiteScholarEasy',
-    title: 'CiteScholar Easy',
-    desc: 'Download EndNote citation formats from Google Scholar by paper titles. Streamline academic reference management.',
     tech: ['Python', 'Google Scholar', 'Citation'],
     stars: 1,
     url: 'https://github.com/Zengwenliang0416/CiteScholarEasy',
@@ -135,7 +95,6 @@ export const projects: Project[] = [
 export const publications = [
   {
     title: 'GDilatedDTA',
-    desc: 'GDilatedDTA: Graph dilation convolution strategy for drug target binding affinity prediction.',
     journal: 'Biomedical Signal Processing and Control, Vol.92, 2024',
     authors: 'Longxin Zhang, Wenliang Zeng, Jingsheng Chen, Jianguo Chen, Keqin Li',
     doi: 'https://doi.org/10.1016/j.bspc.2024.106110',
@@ -143,7 +102,6 @@ export const publications = [
   },
   {
     title: 'ParaCPI',
-    desc: 'ParaCPI: A Parallel Graph Convolutional Network for Compound-Protein Interaction Prediction.',
     journal: 'IEEE/ACM Transactions on Computational Biology and Bioinformatics, Vol.21(5), 2024, pp.1565-1578',
     authors: 'Longxin Zhang, Wenliang Zeng, Jingsheng Chen, Jianguo Chen, Keqin Li',
     doi: 'https://doi.org/10.1109/TCBB.2024.3404889',

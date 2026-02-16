@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { projects, type Project } from '../data/content'
+import { useLocale } from '../i18n/LocaleContext'
 import RevealOnScroll from './ui/RevealOnScroll'
 
 function ProjectImage({ project }: { project: Project }) {
   if (project.image) {
     return (
-      <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+      <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
     )
   }
   return (
@@ -33,6 +34,8 @@ function ProjectImage({ project }: { project: Project }) {
 }
 
 function FeaturedCard({ project, index }: { project: Project; index: number }) {
+  const { t } = useLocale()
+  const tr = t.projects.items[project.name]
   const isReversed = index % 2 === 1
   return (
     <RevealOnScroll>
@@ -54,7 +57,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
               className="w-2 h-2 rounded-full"
               style={{ background: project.gradient[0] }}
             />
-            <span className="text-text-muted text-xs font-mono uppercase tracking-widest">Featured</span>
+            <span className="text-text-muted text-xs font-mono uppercase tracking-widest">{t.projects.featuredLabel}</span>
             {project.stars && (
               <span className="ml-auto font-mono text-sm" style={{ color: project.gradient[0] }}>
                 {project.stars} ★
@@ -62,16 +65,16 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
             )}
           </div>
           <h3 className="font-display text-2xl lg:text-3xl font-bold text-text-primary mb-4 group-hover:text-gradient-multi transition-colors">
-            {project.title}
+            {tr?.title ?? project.name}
           </h3>
-          <p className="text-text-secondary text-[15px] leading-relaxed mb-6">{project.desc}</p>
+          <p className="text-text-secondary text-[15px] leading-relaxed mb-6">{tr?.desc}</p>
           <div className="flex flex-wrap gap-2">
-            {project.tech.map((t) => (
+            {project.tech.map((tech) => (
               <span
-                key={t}
+                key={tech}
                 className="px-3 py-1 rounded-full text-xs font-mono border border-dark-border text-text-muted"
               >
-                {t}
+                {tech}
               </span>
             ))}
           </div>
@@ -82,6 +85,8 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
 }
 
 function ProjectCard({ project, delay }: { project: Project; delay: number }) {
+  const { t } = useLocale()
+  const tr = t.projects.items[project.name]
   return (
     <RevealOnScroll delay={delay}>
       <motion.a
@@ -99,7 +104,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
         <div className="p-6">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display text-lg font-bold text-text-primary group-hover:text-gradient-multi transition-colors">
-              {project.title}
+              {tr?.title ?? project.name}
             </h3>
             {project.stars && (
               <span className="font-mono text-xs" style={{ color: project.gradient[0] }}>
@@ -107,11 +112,11 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
               </span>
             )}
           </div>
-          <p className="text-text-secondary text-sm leading-relaxed mb-4">{project.desc}</p>
+          <p className="text-text-secondary text-sm leading-relaxed mb-4">{tr?.desc}</p>
           <div className="flex flex-wrap gap-1.5">
-            {project.tech.map((t) => (
-              <span key={t} className="px-2.5 py-0.5 rounded-full text-xs font-mono border border-dark-border text-text-muted">
-                {t}
+            {project.tech.map((tech) => (
+              <span key={tech} className="px-2.5 py-0.5 rounded-full text-xs font-mono border border-dark-border text-text-muted">
+                {tech}
               </span>
             ))}
           </div>
@@ -122,6 +127,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
 }
 
 export default function Projects() {
+  const { t } = useLocale()
   const featured = projects.filter((p) => p.featured)
   const others = projects.filter((p) => !p.featured)
 
@@ -130,11 +136,11 @@ export default function Projects() {
       <RevealOnScroll>
         <div className="flex items-center gap-6 mb-16">
           <h2 className="font-display text-[clamp(36px,5vw,56px)] font-bold text-text-primary">
-            Selected<br />
-            <span className="text-gradient-coral">Projects</span>
+            {t.projects.heading[0]}<br />
+            <span className="text-gradient-coral">{t.projects.heading[1]}</span>
           </h2>
           <div className="flex-1 h-px bg-dark-border" />
-          <span className="text-text-muted font-mono text-sm">{projects.length} projects</span>
+          <span className="text-text-muted font-mono text-sm">{t.projects.counter(projects.length)}</span>
         </div>
       </RevealOnScroll>
 
@@ -145,7 +151,7 @@ export default function Projects() {
       </div>
 
       <RevealOnScroll className="mb-8">
-        <h3 className="font-display text-xl text-text-secondary">More Projects</h3>
+        <h3 className="font-display text-xl text-text-secondary">{t.projects.moreHeading}</h3>
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

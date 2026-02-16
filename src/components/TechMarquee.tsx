@@ -1,4 +1,5 @@
 import { techStack } from '../data/content'
+import { useLocale } from '../i18n/LocaleContext'
 import RevealOnScroll from './ui/RevealOnScroll'
 
 function MarqueeRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
@@ -24,6 +25,7 @@ function MarqueeRow({ items, reverse = false }: { items: string[]; reverse?: boo
 }
 
 export default function TechMarquee() {
+  const { t } = useLocale()
   const mid = Math.ceil(techStack.length / 2)
   const row1 = techStack.slice(0, mid)
   const row2 = techStack.slice(mid)
@@ -33,7 +35,7 @@ export default function TechMarquee() {
       <RevealOnScroll>
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-10">
           <h2 className="font-display text-[clamp(36px,5vw,56px)] font-bold text-text-primary">
-            Tech <span className="text-gradient-lime">Stack</span>
+            {t.techStack.heading[0]} <span className="text-gradient-lime">{t.techStack.heading[1]}</span>
           </h2>
         </div>
       </RevealOnScroll>

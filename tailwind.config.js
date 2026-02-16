@@ -19,7 +19,7 @@ export default {
         'text-muted': '#555555',
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'Noto Sans SC', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
         display: ['Space Grotesk', 'sans-serif'],
       },

@@ -1,6 +1,9 @@
 import { siteConfig } from '../data/content'
+import { useLocale } from '../i18n/LocaleContext'
 
 export default function Footer() {
+  const { t } = useLocale()
+
   return (
     <footer className="border-t border-dark-border py-8 px-6 md:px-12">
       <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -8,10 +11,11 @@ export default function Footer() {
           WZ<span className="text-coral">.</span>
         </span>
         <p className="text-text-muted text-sm">
-          Built by{' '}
+          {t.footer.builtBy}{' '}
           <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary transition-colors">
             {siteConfig.name}
           </a>
+          {t.footer.builtBySuffix}
         </p>
       </div>
     </footer>

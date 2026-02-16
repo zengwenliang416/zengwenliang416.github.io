@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { heroData, stats } from '../data/content'
+import { useLocale } from '../i18n/LocaleContext'
 import CountUp from './ui/CountUp'
 
 const letterVariants = {
@@ -37,6 +37,8 @@ function AnimatedName({ text }: { text: string }) {
 }
 
 export default function Hero() {
+  const { t } = useLocale()
+
   return (
     <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 max-w-[1400px] mx-auto pt-20">
       {/* Decorative blobs */}
@@ -51,12 +53,25 @@ export default function Hero() {
         transition={{ delay: 0.2, duration: 0.6 }}
         className="text-text-secondary text-lg md:text-xl mb-4"
       >
-        {heroData.greeting}
+        {t.hero.greeting}
       </motion.p>
 
-      <h1 className="font-display font-bold text-[clamp(60px,12vw,160px)] leading-[0.9] tracking-tight text-text-primary mb-8">
-        <AnimatedName text={heroData.name} />
+      <h1 className="font-display font-bold text-[clamp(60px,12vw,160px)] leading-[0.9] tracking-tight text-text-primary mb-2">
+        <AnimatedName text={'WENLIANG\nZENG'} />
       </h1>
+
+      {t.hero.chineseName && (
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+          className="font-display text-2xl md:text-3xl text-text-secondary mb-6"
+        >
+          {t.hero.chineseName}
+        </motion.p>
+      )}
+
+      {!t.hero.chineseName && <div className="mb-6" />}
 
       {/* Role pills */}
       <motion.div
@@ -65,7 +80,7 @@ export default function Hero() {
         transition={{ delay: 1.2, duration: 0.6 }}
         className="flex flex-wrap gap-3 mb-8"
       >
-        {heroData.roles.map((role, i) => {
+        {t.hero.roles.map((role, i) => {
           const colors = ['bg-coral/15 text-coral border-coral/20', 'bg-lime-dim text-lime border-lime/20', 'bg-indigo-dim text-indigo border-indigo/20']
           return (
             <span key={role} className={`px-4 py-1.5 rounded-full text-sm font-mono border ${colors[i % 3]}`}>
@@ -81,7 +96,7 @@ export default function Hero() {
         transition={{ delay: 1.4, duration: 0.6 }}
         className="text-text-secondary text-lg max-w-[560px] mb-16"
       >
-        {heroData.description}
+        {t.hero.description}
       </motion.p>
 
       {/* Stats row */}
@@ -91,7 +106,7 @@ export default function Hero() {
         transition={{ delay: 1.8, duration: 0.8 }}
         className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t border-dark-border pt-10"
       >
-        {stats.map((s) => (
+        {t.hero.stats.map((s) => (
           <div key={s.label}>
             <div className="font-display text-[clamp(36px,5vw,56px)] font-bold text-text-primary leading-none mb-1">
               <CountUp target={s.value} suffix={s.suffix} />
