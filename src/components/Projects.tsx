@@ -1,8 +1,21 @@
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { projects, type Project } from "../data/content";
 import { useLocale } from "../i18n/LocaleContext";
 import RevealOnScroll from "./ui/RevealOnScroll";
 import GlassCard from "./glass/GlassCard";
+
+const SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
+const EASE_CUSTOM = [0.16, 1, 0.3, 1] as const;
+
+function useFinePointer(): boolean {
+  const ref = useRef(
+    typeof window !== "undefined" &&
+      window.matchMedia("(pointer: fine)").matches,
+  );
+  return ref.current;
+}
 
 function ProjectImage({ project }: { project: Project }) {
   if (project.image) {
@@ -10,6 +23,8 @@ function ProjectImage({ project }: { project: Project }) {
       <img
         src={project.image}
         alt={project.name}
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-cover"
       />
     );
@@ -35,152 +50,281 @@ function ProjectImage({ project }: { project: Project }) {
           background: `linear-gradient(135deg, ${project.gradient[0]}, ${project.gradient[1]})`,
         }}
       />
-      <div className="absolute bottom-6 right-6 font-mono text-xs opacity-20 text-text-muted">
+      <div className="absolute bottom-4 right-4 font-mono text-xs opacity-20 text-text-muted">
         {project.name}
       </div>
     </div>
   );
 }
 
-function FeaturedCard({ project, index }: { project: Project; index: number }) {
-  const { t } = useLocale();
-  const tr = t.projects.items[project.name];
-  const isReversed = index % 2 === 1;
-  return (
-    <RevealOnScroll>
-      <motion.div
-        className="relative"
-        whileHover={{ y: -4, scale: 1.01 }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      >
-        {/* Per-card background glow */}
-        <div
-          className="absolute inset-0 -z-10 opacity-[0.15] blur-[120px]"
-          style={{
-            background: `radial-gradient(ellipse, ${project.gradient[0]}AA, transparent 70%)`,
-          }}
-        />
-
-        <GlassCard variant="featured" className="h-full">
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`group grid grid-cols-1 lg:grid-cols-2 gap-0 glass-interactive`}
+function HoverPreview({
+  project,
+  previewRef,
+}: {
+  project: Project | null;
+  previewRef: React.RefObject<HTMLDivElement>;
+}) {
+  return createPortal(
+    <div ref={previewRef} className="fixed z-[9999] pointer-events-none">
+      <AnimatePresence>
+        {project && (
+          <motion.div
+            key="preview"
+            className="w-48 h-32 rounded-xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.15, ease: EASE_CUSTOM }}
           >
-            <div
-              className={`aspect-[16/10] lg:aspect-auto ${isReversed ? "lg:order-2" : ""}`}
-            >
-              <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-700">
-                <ProjectImage project={project} />
-              </div>
+            <div className="glass-card w-full h-full rounded-xl overflow-hidden">
+              <ProjectImage project={project} />
             </div>
-            <div className="p-8 lg:p-12 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-4">
-                <span
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: project.gradient[0] }}
-                />
-                <span className="text-xs font-mono uppercase tracking-[0.15em] text-text-muted">
-                  {t.projects.featuredLabel}
-                </span>
-                {project.stars && (
-                  <span className="ml-auto font-mono text-xs text-lime">
-                    ★ {project.stars}
-                  </span>
-                )}
-              </div>
-              <h3 className="font-display text-2xl lg:text-3xl font-bold text-text-primary mb-4 leading-tight">
-                {tr?.title ?? project.name}
-              </h3>
-              <div className="glass-text-area mb-6">
-                <p className="text-[16px] font-medium text-text-secondary leading-[1.65]">
-                  {tr?.desc}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 text-xs font-mono tracking-[0.02em] text-text-muted bg-black/[0.03] border border-black/[0.06] rounded-full"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </a>
-        </GlassCard>
-      </motion.div>
-    </RevealOnScroll>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>,
+    document.body,
   );
 }
 
-function ProjectCard({ project, delay }: { project: Project; delay: number }) {
+function CollapsedBar({
+  project,
+  isOpen,
+  isFeatured,
+  onToggle,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  project: Project;
+  isOpen: boolean;
+  isFeatured: boolean;
+  onToggle: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) {
   const { t } = useLocale();
   const tr = t.projects.items[project.name];
-  return (
-    <RevealOnScroll delay={delay}>
-      <motion.div
-        className="relative"
-        whileHover={{ y: -6, scale: 1.015 }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      >
-        <div
-          className="absolute inset-0 -z-10 opacity-[0.12] blur-[100px]"
-          style={{
-            background: `radial-gradient(ellipse, ${project.gradient[0]}99, transparent 70%)`,
-          }}
-        />
+  const rowHeight = isFeatured ? "min-h-[88px]" : "min-h-[72px]";
 
-        <GlassCard variant="grid" className="h-full">
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block glass-interactive"
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onToggle();
+      }
+      if (e.key === "Escape" && isOpen) {
+        onToggle();
+      }
+    },
+    [isOpen, onToggle],
+  );
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-expanded={isOpen}
+      data-cursor="open"
+      className={`flex items-center gap-4 px-5 cursor-pointer select-none glass-interactive transition-colors duration-200 ${rowHeight} ${
+        isOpen ? "bg-white/20" : "hover:bg-white/10"
+      }`}
+      style={
+        isFeatured
+          ? { borderLeft: `3px solid ${project.gradient[0]}` }
+          : { borderLeft: "3px solid transparent" }
+      }
+      onClick={onToggle}
+      onKeyDown={handleKeyDown}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="flex-1 min-w-0 flex items-center gap-4">
+        <span className="font-display font-semibold text-text-primary text-base truncate">
+          {tr?.title ?? project.name}
+        </span>
+        <div className="hidden sm:flex items-center gap-1.5 flex-shrink-0">
+          {project.tech.slice(0, 3).map((tech) => (
+            <span
+              key={tech}
+              className="px-2.5 py-0.5 rounded-full text-xs font-mono text-text-muted bg-black/[0.03] border border-black/[0.06]"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 flex-shrink-0">
+        {project.stars != null && (
+          <span className="font-mono text-xs text-lime hidden sm:block">
+            ★ {project.stars}
+          </span>
+        )}
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={SPRING}
+          className="w-5 h-5 text-text-muted flex items-center justify-center"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
           >
-            <div className="aspect-[16/10] overflow-hidden">
-              <div className="w-full h-full group-hover:scale-[1.05] transition-transform duration-700">
-                <ProjectImage project={project} />
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-display text-lg font-bold text-text-primary">
-                  {tr?.title ?? project.name}
-                </h3>
-                {project.stars && (
-                  <span className="font-mono text-xs text-lime">
-                    ★ {project.stars}
-                  </span>
-                )}
-              </div>
-              <p className="text-text-secondary text-sm leading-relaxed mb-4 font-medium">
-                {tr?.desc}
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {project.tech.map((tech) => (
+            <path
+              d="M4 6l4 4 4-4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function ExpandedPanel({ project }: { project: Project }) {
+  const { t } = useLocale();
+  const tr = t.projects.items[project.name];
+
+  return (
+    <motion.div
+      key="panel"
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={SPRING}
+      style={{ overflow: "hidden" }}
+    >
+      <div className="px-5 pb-6 pt-1">
+        <GlassCard variant="featured" className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            <motion.div
+              className="aspect-[16/10] lg:aspect-auto lg:min-h-[220px] overflow-hidden"
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1.0 }}
+              transition={SPRING}
+            >
+              <ProjectImage project={project} />
+            </motion.div>
+
+            <div className="p-6 lg:p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-3">
                   <span
-                    key={tech}
-                    className="px-2.5 py-0.5 rounded-full text-xs font-mono text-text-muted bg-black/[0.03] border border-black/[0.06]"
-                  >
-                    {tech}
-                  </span>
-                ))}
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: project.gradient[0] }}
+                  />
+                  {project.stars != null && (
+                    <span className="font-mono text-xs text-lime">
+                      ★ {project.stars}
+                    </span>
+                  )}
+                </div>
+
+                <div className="glass-text-area mb-4">
+                  <p className="text-[15px] font-medium text-text-secondary leading-[1.65]">
+                    {tr?.desc}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {project.tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-0.5 rounded-full text-xs font-mono text-text-muted bg-black/[0.03] border border-black/[0.06]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
+
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 self-start px-4 py-2 rounded-xl text-sm font-medium text-text-primary glass-btn glass-interactive"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                GitHub
+              </a>
             </div>
-          </a>
+          </div>
         </GlassCard>
-      </motion.div>
-    </RevealOnScroll>
+      </div>
+    </motion.div>
+  );
+}
+
+function AccordionRow({
+  project,
+  isOpen,
+  isFeatured,
+  onToggle,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  project: Project;
+  isOpen: boolean;
+  isFeatured: boolean;
+  onToggle: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) {
+  return (
+    <motion.div layout transition={SPRING} className="overflow-hidden">
+      <CollapsedBar
+        project={project}
+        isOpen={isOpen}
+        isFeatured={isFeatured}
+        onToggle={onToggle}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
+      <AnimatePresence initial={false}>
+        {isOpen && <ExpandedPanel key={project.name} project={project} />}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 export default function Projects() {
   const { t } = useLocale();
-  const featured = projects.filter((p) => p.featured);
-  const others = projects.filter((p) => !p.featured);
+  const finePointer = useFinePointer();
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [hoverProject, setHoverProject] = useState<Project | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!finePointer) return;
+    const onMove = (e: MouseEvent) => {
+      if (previewRef.current) {
+        previewRef.current.style.left = `${e.clientX + 16}px`;
+        previewRef.current.style.top = `${e.clientY - 64}px`;
+      }
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [finePointer]);
+
+  const handleToggle = useCallback((name: string) => {
+    setOpenId((prev) => (prev === name ? null : name));
+  }, []);
+
+  const showPreview =
+    finePointer && hoverProject !== null && openId !== hoverProject?.name;
 
   return (
     <section id="projects" className="relative py-32 px-6">
@@ -198,17 +342,30 @@ export default function Projects() {
           </h2>
         </RevealOnScroll>
 
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {featured.map((p, i) => (
-            <FeaturedCard key={p.name} project={p} index={i} />
-          ))}
-        </div>
+        <RevealOnScroll delay={0.1}>
+          <div className="mt-16 glass-card rounded-2xl overflow-hidden divide-y divide-black/[0.05]">
+            {projects.map((project) => (
+              <AccordionRow
+                key={project.name}
+                project={project}
+                isOpen={openId === project.name}
+                isFeatured={!!project.featured}
+                onToggle={() => handleToggle(project.name)}
+                onMouseEnter={() =>
+                  finePointer && openId !== project.name
+                    ? setHoverProject(project)
+                    : undefined
+                }
+                onMouseLeave={() => setHoverProject(null)}
+              />
+            ))}
+          </div>
+        </RevealOnScroll>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {others.map((p, i) => (
-            <ProjectCard key={p.name} project={p} delay={i * 0.08} />
-          ))}
-        </div>
+        <HoverPreview
+          previewRef={previewRef}
+          project={showPreview ? hoverProject : null}
+        />
 
         <div className="mt-12 text-center">
           <a
