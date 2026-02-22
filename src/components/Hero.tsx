@@ -3,6 +3,8 @@ import { useLocale } from "../i18n/LocaleContext";
 import GlassPill from "./glass/GlassPill";
 import CountUp from "./ui/CountUp";
 
+const ROLE_ACCENTS = ["#FF3C5F", "#5856D6", "#34C759"];
+
 export default function Hero() {
   const { t } = useLocale();
 
@@ -11,28 +13,6 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-16"
     >
-      {/* Decorative blobs */}
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        aria-hidden="true"
-      >
-        <div
-          className="blob-animated absolute top-[-10%] right-[-5%] w-[60vw] h-[60vh] opacity-[0.15] blur-[120px]"
-          style={{
-            background:
-              "radial-gradient(ellipse, rgba(255,60,95,1), transparent 70%)",
-          }}
-        />
-        <div
-          className="blob-animated absolute bottom-[-5%] left-[-10%] w-[50vw] h-[50vh] opacity-[0.12] blur-[120px]"
-          style={{
-            background:
-              "radial-gradient(ellipse, rgba(88,86,214,1), transparent 70%)",
-            animationDelay: "3s",
-          }}
-        />
-      </div>
-
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <p className="text-text-secondary text-lg md:text-xl mb-4">
           {t.hero.greeting}
@@ -50,26 +30,23 @@ export default function Hero() {
           ZENG
         </h1>
 
-        {t.hero.chineseName && (
-          <p className="font-display text-2xl md:text-3xl text-text-secondary mb-6">
-            {t.hero.chineseName}
-          </p>
-        )}
-
-        {!t.hero.chineseName && <div className="mb-6" />}
+        <div className="mb-6">
+          {t.hero.chineseName && (
+            <p className="font-display text-2xl md:text-3xl text-text-secondary">
+              {t.hero.chineseName}
+            </p>
+          )}
+        </div>
 
         {/* Role pills */}
         <div className="flex flex-wrap gap-3 mb-8">
-          {t.hero.roles.map((role, i) => {
-            const accents = ["#FF3C5F", "#5856D6", "#34C759"];
-            return (
-              <GlassPill key={role} accent={accents[i % 3]}>
-                <span className="text-sm font-medium text-text-primary">
-                  {role}
-                </span>
-              </GlassPill>
-            );
-          })}
+          {t.hero.roles.map((role, i) => (
+            <GlassPill key={role} accent={ROLE_ACCENTS[i % 3]}>
+              <span className="text-sm font-medium text-text-primary">
+                {role}
+              </span>
+            </GlassPill>
+          ))}
         </div>
 
         <p className="text-text-secondary text-lg max-w-[560px] mb-16 font-medium">

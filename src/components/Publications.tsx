@@ -23,7 +23,7 @@ export default function Publications() {
       <div className="max-w-7xl mx-auto">
         <RevealOnScroll>
           <p className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
-            Research
+            {t.publications.eyebrow}
           </p>
           <h2
             className="mt-3 font-display font-bold text-text-primary"

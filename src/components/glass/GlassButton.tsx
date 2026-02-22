@@ -27,12 +27,15 @@ export default function GlassButton({
       ? { background: "rgba(255,255,255,0.55)" }
       : undefined;
 
+  const effectiveRel = target === "_blank" ? rel || "noopener noreferrer" : rel;
+
   if (href) {
     return (
       <a
         href={href}
         target={target}
-        rel={rel}
+        rel={effectiveRel}
+        aria-label={ariaLabel}
         className={baseClass}
         style={style}
       >
