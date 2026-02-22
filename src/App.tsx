@@ -8,6 +8,7 @@ import Publications from "./components/Publications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BackgroundLayer from "./components/BackgroundLayer";
+import SectionDivider from "./components/ui/SectionDivider";
 
 export default function App() {
   return (
@@ -19,8 +20,11 @@ export default function App() {
         <main className="md:cursor-none">
           <Hero />
           <Projects />
+          <SectionDivider />
           <TechMarquee />
+          <SectionDivider />
           <Publications />
+          <SectionDivider />
           <Contact />
         </main>
         <Footer />
