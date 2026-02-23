@@ -17,7 +17,8 @@ export default function GlassPill({
       style={
         accent
           ? {
-              background: `linear-gradient(135deg, ${accent}10, rgba(255,255,255,0.50))`,
+              background: `linear-gradient(135deg, ${accent}10, rgba(255,255,255,0.03))`,
+              borderColor: `${accent}20`,
             }
           : undefined
       }

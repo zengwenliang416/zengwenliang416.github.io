@@ -15,7 +15,7 @@ export default function GlassSection({
 }: GlassSectionProps) {
   const radius = fullWidth ? "" : "rounded-3xl";
   const marqueeStyle =
-    preset === "marquee" ? { background: "rgba(255,255,255,0.35)" } : undefined;
+    preset === "marquee" ? { background: "rgba(255,255,255,0.02)" } : undefined;
 
   return (
     <div
