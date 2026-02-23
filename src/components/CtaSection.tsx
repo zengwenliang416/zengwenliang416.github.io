@@ -69,7 +69,7 @@ function ShakeButton({ text }: { text: string }) {
       {/* Ghost stroke layer */}
       <span
         ref={ghostRef}
-        className="absolute inset-0 font-display font-black text-transparent uppercase tracking-[-0.02em] pointer-events-none"
+        className="absolute inset-0 font-display font-bold text-transparent uppercase tracking-[-0.02em] pointer-events-none"
         style={{
           fontSize: "clamp(28px, 5vw, 56px)",
           WebkitTextStroke: "2px rgba(255,60,95,0.5)",
@@ -82,7 +82,7 @@ function ShakeButton({ text }: { text: string }) {
 
       {/* Main text */}
       <span
-        className="font-display font-black text-text-primary uppercase tracking-[-0.02em] relative"
+        className="font-display font-bold text-text-primary uppercase tracking-[-0.02em] relative"
         style={{
           fontSize: "clamp(28px, 5vw, 56px)",
           WebkitTextStroke: "1px rgba(255,255,255,0.2)",
@@ -164,7 +164,7 @@ export default function CtaSection() {
       <div className="max-w-5xl mx-auto px-6 md:px-12 text-center">
         <h2
           ref={headingRef as React.RefObject<HTMLHeadingElement>}
-          className="font-display font-black text-text-primary leading-[1.1] tracking-[-0.03em] mb-16"
+          className="font-display font-bold text-text-primary leading-[1.1] tracking-[-0.03em] mb-16"
           style={{ fontSize: "clamp(32px, 6vw, 80px)" }}
         >
           {t.cta.heading}

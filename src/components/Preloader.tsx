@@ -106,7 +106,7 @@ export default function Preloader({
           </motion.p>
 
           <motion.div
-            className="flex items-start leading-none select-none font-display font-black text-white"
+            className="flex items-start leading-none select-none font-display font-bold text-white"
             style={{
               fontSize: "clamp(96px, 18vw, 200px)",
               fontVariantNumeric: "tabular-nums",

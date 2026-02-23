@@ -125,7 +125,7 @@ function useLineReveal(lineCount: number) {
 
       if (allDone) {
         lines.forEach((l) => {
-          l.style.transform = "translate3d(0, 0, 0)";
+          l.style.transform = "none";
           l.style.willChange = "auto";
         });
       } else {
@@ -175,7 +175,7 @@ export default function Hero() {
       if (y > 0.5 || opacity < 0.99) {
         raf = requestAnimationFrame(animate);
       } else {
-        el.style.transform = "translate3d(0, 0, 0)";
+        el.style.transform = "none";
         el.style.opacity = "1";
         el.style.willChange = "auto";
       }
@@ -229,7 +229,7 @@ export default function Hero() {
 
       <div ref={contentRef} className="relative z-10 w-full">
         <h1
-          className="font-display font-black leading-[0.82] tracking-[-0.04em] px-3 md:px-6 lg:px-8"
+          className="font-display font-bold leading-[0.82] tracking-[-0.04em] px-3 md:px-6 lg:px-8"
           style={{
             fontSize: "clamp(48px, 14vw, 280px)",
             marginBottom: "-0.05em",

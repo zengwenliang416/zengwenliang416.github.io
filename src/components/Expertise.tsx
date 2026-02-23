@@ -149,7 +149,7 @@ export default function Expertise() {
     <section id="expertise" className="relative py-32 md:py-48">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <RevealHeading
-          className="font-display font-black text-text-primary uppercase tracking-[-0.03em] mb-8"
+          className="font-display font-bold text-text-primary uppercase tracking-[-0.03em] mb-8"
           style={{ fontSize: "clamp(36px, 6vw, 72px)" }}
         >
           {t.expertiseSection.heading}

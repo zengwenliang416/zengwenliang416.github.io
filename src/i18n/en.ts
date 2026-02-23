@@ -13,7 +13,7 @@ export const en: LocaleContent = {
   },
   hero: {
     greeting: "Hello, I'm",
-    lines: ["FULL STACK", "DEVELOPER &", "AI TOOL", "BUILDER"],
+    lines: ["FULL STACK", "DEVELOPER", "AND AI TOOL", "BUILDER"],
     scrollHint: "SCROLL TO EXPLORE",
     roles: [
       "Full-Stack Developer",

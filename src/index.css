@@ -26,6 +26,9 @@
   body {
     @apply bg-dark text-text-secondary font-sans antialiased overflow-x-hidden;
     line-height: 1.6;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   ::selection {
     background: rgba(255, 60, 95, 0.3);

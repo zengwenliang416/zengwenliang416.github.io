@@ -14,7 +14,7 @@ export const zh: LocaleContent = {
   hero: {
     greeting: "你好，我是",
     chineseName: "曾文亮",
-    lines: ["FULL STACK", "DEVELOPER &", "AI TOOL", "BUILDER"],
+    lines: ["FULL STACK", "DEVELOPER", "AND AI TOOL", "BUILDER"],
     scrollHint: "滚动探索",
     roles: ["全栈开发者", "AI 工具构建者", "开源创作者"],
     description: "构建 AI 驱动的工具与生产级应用，连接学术研究与工程实践。",

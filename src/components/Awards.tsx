@@ -110,7 +110,7 @@ export default function Awards() {
           </RevealHeading>
           <RevealOnScroll>
             <div className="text-right">
-              <span className="font-display font-black text-text-primary text-4xl md:text-6xl">
+              <span className="font-display font-bold text-text-primary text-4xl md:text-6xl">
                 <CountUp target={totalAchievements} />
               </span>
               <span className="block text-xs font-mono text-text-muted tracking-[0.2em] uppercase mt-1">

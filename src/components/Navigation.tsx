@@ -182,7 +182,7 @@ export default function Navigation() {
           {/* Logo - Lusion uses bold brand name top-left */}
           <a
             href="#"
-            className="font-display font-black text-[15px] tracking-tight text-white hover:opacity-80 transition-opacity"
+            className="font-display font-bold text-[15px] tracking-tight text-white hover:opacity-80 transition-opacity"
           >
             WENLIANG
           </a>
